@@ -15,7 +15,7 @@ def analysis_body():
     )
 
     df = pd.read_csv("outputs/datasets/collection/EuropeanCitiesAirbnb.csv")
-    df_filtered = df[df['room_type'] == 'Entire home/apt']    
+    df_filtered = df[(df['room_type'] == 'Entire home/apt') & (df['bedrooms'] <= 3)]    
 
     # inspect data
     if st.checkbox("Inspect DataFrame"):
@@ -40,11 +40,7 @@ def analysis_body():
     avg_price_pivot2 = average_price2.pivot(index='city', columns='weekends', values='daily_price')
     best_prices2 = avg_price_pivot2.sort_values(by=[0, 1], ascending=False)
     print(best_prices2)
-    # code used in the 02-AirbnbCaseStudy notebook to check average price
-    # average_price = df_filtered.groupby(['city', 'weekends'])['daily_price'].mean().reset_index()    
-    # avg_price_pivot = average_price.pivot(index='city', columns='weekends', values='daily_price')    
-    # best_prices = avg_price_pivot.sort_values(by=[0,1], ascending=False)
-
+    
     # check average price
     if st.checkbox("Check Average Price Data"):
         st.write("Sorted Average Prices by City (Weekdays (0) and Weekends (1)):")
@@ -60,7 +56,7 @@ def analysis_body():
     ax.set_title('Average Daily Price by City and Weekday/Weekend')
     ax.set_xlabel('City')
     ax.set_ylabel('Average Daily Price')
-    ax.set_xticklabels(best_prices2.index, rotation=45)  # Rotate the x-axis labels for readability
+    ax.set_xticklabels(best_prices2.index, rotation=45)  
     ax.legend(title='Weekends', labels=['No', 'Yes'])
     ax.grid(axis='y')
 
@@ -85,7 +81,7 @@ def analysis_body():
     cities_of_interest = ['Amsterdam', 'Barcelona', 'London']
     # Filter data to include only the relevant cities and columns of interest
     relevant_columns = ['daily_price', 'bedrooms', 'city_center_dist_km', 'metro_dist_km', 'weekends', 'city']
-    df_subset = df_filtered[(df_filtered['city'].isin(cities_of_interest)) & (df_filtered['daily_price'] <= 2000)][relevant_columns]
+    df_subset = df_filtered[(df_filtered['city'].isin(cities_of_interest)) & (df_filtered['daily_price'] <= 750)][relevant_columns]
 
     # Calculate Pearson correlation
     pearson_correlation = df_subset.corr(method='pearson')
@@ -117,11 +113,11 @@ def analysis_body():
     set(price_pearson_corr[:best_corr].index.to_list() + price_spearman_corr[:best_corr].index.to_list())
 
     vars_to_analysis = ['bedrooms', 'city_center_dist_km', 'metro_dist_km']
-    vars_to_analysis
-    
-    variables_to_plot = vars_to_analysis + ['daily_price']    
+    df_subset_filtered = df_subset[df_subset['daily_price'] <= 750]
+    variables_to_plot = vars_to_analysis + ['daily_price']
+        
     fig, axes = plt.subplots(2, 2, figsize=(15, 10))  
-    df_subset[variables_to_plot].hist(bins=30, ax=axes)
+    df_subset_filtered[variables_to_plot].hist(bins=30, ax=axes)
     plt.tight_layout()
 
     # Checkbox to show distribution plots
@@ -136,8 +132,8 @@ def analysis_body():
     if st.checkbox("Scatter Plots of Variables vs. Daily Price"):
     
         for var in vars_to_analysis:
-            fig, ax = plt.subplots(figsize=(10, 6))  # Create a figure for each variable
-            ax.scatter(df_subset['daily_price'], df_subset[var], color='blue')
+            fig, ax = plt.subplots(figsize=(10, 6))  
+            ax.scatter(df_subset_filtered['daily_price'], df_subset_filtered[var], color='blue')
             ax.set_title(f'Scatter Plot of {var.capitalize()} vs. Daily Price')
             ax.set_xlabel('Daily Price')
             ax.set_ylabel(var.capitalize())
@@ -158,7 +154,7 @@ def analysis_body():
         for var in vars_to_analysis:
         
             # Calculate average for each city for the current variable
-            average_price = df_subset.groupby('city')[var].mean().reset_index()
+            average_price = df_subset_filtered.groupby('city')[var].mean().reset_index()
             # Sort the averages in descending order
             average_price = average_price.sort_values(by=var, ascending=False)
         

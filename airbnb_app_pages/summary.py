@@ -17,8 +17,9 @@ def summary_body():
     st.write("### Clients' Requirement")  
     # text used from the 02-AirbnbCaseStudy notebook
     st.info(
-        f"+ The three cities with the best average daily rental price for an entire house/apt;\n"
+        f"+ The three cities with the best average daily rental price for an entire house/apt with upm to 3 brdrooms;\n"
         f"+ Considering the number of bedrooms and the distance of the property from the city center and the nearest metro, they would like to:\n"
         f"  + know what influences prices the most:\n"
         f"  + be able to predict price of future acquired properties.\n"
+        f"+ **To develop the second requirement, my clients want to keep the analysis in the average price range that will be found in the first requirement.**\n"
         )  

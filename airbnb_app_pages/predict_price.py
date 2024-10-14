@@ -13,23 +13,28 @@ def predict_price_body():
         st.error(f"Error loading the pipeline: {e}")
         return
 
-    # User input fields for property features    
+    # User input fields for property features 
+    bedrooms = st.selectbox('Number of bedrooms', [0, 1, 2, 3])   
     city_center_dist_km = st.number_input('Enter the distance from city center (km)', min_value=0.0, step=0.1, format="%.3f")
-    bedrooms = st.selectbox('Number of bedrooms', [0, 1, 2, 3])
+    metro_dist_km = st.number_input('Enter the distance from metro (km)', min_value=0.0, step=0.1, format="%.3f")
+    # weekends = st.selectbox('Select (0) for weekday and (1) for weekend', [0, 1])
     city = st.selectbox('Select the city', ['Amsterdam', 'Barcelona', 'London'])
 
     # Create input DataFrame, ensuring it matches the feature order expected by the pipeline
     input_data = {
+        'city': [city],
         'bedrooms': [bedrooms],        
         'city_center_dist_km': [city_center_dist_km],
-        'city': [city]  
+        'metro_dist_km': [metro_dist_km]
+        # 'city': [city]  
     }
 
     input_df = pd.DataFrame(input_data)
 
     # Show the inputted data
     st.write("Data Inputted for Prediction:")
-    st.write(input_df.style.format({"city_center_dist_km": "{:.3f}"}))
+    st.write(input_df.style.format({"city_center_dist_km": "{:.3f}", "metro_dist_km": "{:.3f}"}))
+    
    
     # Access the preprocessor from the pipeline to check feature order
     preprocessor = best_gb_pipeline.named_steps['preprocessor']
@@ -42,7 +47,7 @@ def predict_price_body():
         categorical_columns = one_hot_encoder.get_feature_names(['city'])  
 
     # Numerical features that the pipeline was trained on
-    numerical_features = ['city_center_dist_km', 'bedrooms']
+    numerical_features = ['bedrooms', 'city_center_dist_km', 'metro_dist_km']
 
     # Combine all expected columns
     expected_columns = list(numerical_features) + list(categorical_columns)    
