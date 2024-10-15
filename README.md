@@ -1,146 +1,163 @@
-# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Europe Airbnb Prices  
 
-## Template Instructions
+Visit the live version of the project dashboard: [Airbnb Predict Prices](https://airbnb-predict-prices-fa26d424b166.herokuapp.com/)
 
-Welcome,
+## CONTENTS
+  
+* [Project Overview](#project-overview) 
+* [Dataset Content](#dataset-content)   
+* [Study Case Requirements](#study-case-requirements) 
+* [Hypotheses and Validation](#hypotheses-and-validation)   
+* [Data Visualisation and Data Cleaning](#data-visualisation-and-data-cleaning) 
+* [Machine Learning Case](#machine-learning-case)
+* [Dashboard Design](#dashboard-design) 
+* [Deployment](#deployment) 
+* [Main Libraries Used](#main-libraries-used)
+* [Resources](#resources)
+* [Content](#content)
+* [Credits](#credits)  
 
-This is the Code Institute student template for the Heritage Housing project option in Predictive Analytics. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions. Click the `Use this template` button above to get started.
+- - - 
 
-You can safely delete the Template Instructions section of this README.md file,  and modify the remaining paragraphs for your own project. Please do read the Template Instructions at least once, though! It contains some important information about the IDE and the extensions we use.
+## Project Overview
 
-## How to use this repo
+**Europe Airbnb Prices** is a fictitious project created to demonstrate skills acquired on the Software Development + Predictive Analytics course with Code Institute.
+This analysis was developed to help a fictitious client (a couple) to decide which would be the best city in Europe to purchase a rental property.
+In this case, my clients informed me what their requirements were, and with this information I developed the analysis.
 
-1. Use this template to create your GitHub project repo
+A public dataset from [Kaggle](https://www.kaggle.com/) was used to develop the analysis project. [Clique here](https://www.kaggle.com/datasets/cahyaalkahfi/airbnb-european-cities-join) to see the original dataset.
 
-2. Log into the cloud-based IDE with your GitHub account.
-
-3. On your Dashboard, click on the Create button
-
-4. Paste in the URL you copied from GitHub earlier
-
-5. Click Create
-
-6. Wait for the workspace to open. This can take a few minutes.
-
-7. Open a new terminal and `pip3 install -r requirements.txt`
-
-11. Open the jupyter_notebooks directory and click on the notebook you want to open.
-
-12. Click the kernel button and choose Python Environments.
-
-Note that the kernel says Python 3.8.18 as it inherits from the workspace so it will be Python-3.8.18 as installed by our template. To confirm this you can use `! python --version` in a notebook code cell.
-
-## Cloud IDE Reminders
-
-To log into the Heroku toolbelt CLI:
-
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In your Cloud IDE, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
-
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with *Regenerate API Key*.
+- - -
 
 ## Dataset Content
 
-* The dataset is sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). We then created a fictitious user story where predictive analytics can be applied in a real project in the workplace.
-* The dataset has almost 1.5 thousand rows and represents housing records from Ames, Iowa, indicating house profile (Floor Area, Basement, Garage, Kitchen, Lot, Porch, Wood Deck, Year Built) and its respective sale price for houses built between 1872 and 2010.
+The dataset used in this project contains Airbnb listing information for properties in European cities. The dataset includes variables such as:
+* **Daily Price:** The price of renting the property per night;
+* **City:** The city where the property is located;
+* **Bedrooms:** Number of bedrooms in the property;
+* **City Center Distance:** Distance of the property from the city center (in kilometers);
+* **Metro Distance:** Distance to the nearest metro station (in kilometers);
+* **Weekends:** Indicator if the price is for a weekend (binary 0/1).
 
-|Variable|Meaning|Units|
-|:----|:----|:----|
-|1stFlrSF|First Floor square feet|334 - 4692|
-|2ndFlrSF|Second-floor square feet|0 - 2065|
-|BedroomAbvGr|Bedrooms above grade (does NOT include basement bedrooms)|0 - 8|
-|BsmtExposure|Refers to walkout or garden level walls|Gd: Good Exposure; Av: Average Exposure; Mn: Minimum Exposure; No: No Exposure; None: No Basement|
-|BsmtFinType1|Rating of basement finished area|GLQ: Good Living Quarters; ALQ: Average Living Quarters; BLQ: Below Average Living Quarters; Rec: Average Rec Room; LwQ: Low Quality; Unf: Unfinshed; None: No Basement|
-|BsmtFinSF1|Type 1 finished square feet|0 - 5644|
-|BsmtUnfSF|Unfinished square feet of basement area|0 - 2336|
-|TotalBsmtSF|Total square feet of basement area|0 - 6110|
-|GarageArea|Size of garage in square feet|0 - 1418|
-|GarageFinish|Interior finish of the garage|Fin: Finished; RFn: Rough Finished; Unf: Unfinished; None: No Garage|
-|GarageYrBlt|Year garage was built|1900 - 2010|
-|GrLivArea|Above grade (ground) living area square feet|334 - 5642|
-|KitchenQual|Kitchen quality|Ex: Excellent; Gd: Good; TA: Typical/Average; Fa: Fair; Po: Poor|
-|LotArea| Lot size in square feet|1300 - 215245|
-|LotFrontage| Linear feet of street connected to property|21 - 313|
-|MasVnrArea|Masonry veneer area in square feet|0 - 1600|
-|EnclosedPorch|Enclosed porch area in square feet|0 - 286|
-|OpenPorchSF|Open porch area in square feet|0 - 547|
-|OverallCond|Rates the overall condition of the house|10: Very Excellent; 9: Excellent; 8: Very Good; 7: Good; 6: Above Average; 5: Average; 4: Below Average; 3: Fair; 2: Poor; 1: Very Poor|
-|OverallQual|Rates the overall material and finish of the house|10: Very Excellent; 9: Excellent; 8: Very Good; 7: Good; 6: Above Average; 5: Average; 4: Below Average; 3: Fair; 2: Poor; 1: Very Poor|
-|WoodDeckSF|Wood deck area in square feet|0 - 736|
-|YearBuilt|Original construction date|1872 - 2010|
-|YearRemodAdd|Remodel date (same as construction date if no remodelling or additions)|1950 - 2010|
-|SalePrice|Sale Price|34900 - 755000|
+The data is stored in a CSV format and was cleaned, transformed, and used for exploratory data analysis (EDA) and machine learning tasks.
 
-## Business Requirements
+- - -
 
-As a good friend, you are requested by your friend, who has received an inheritance from a deceased great-grandfather located in Ames, Iowa, to  help in maximising the sales price for the inherited properties.
+## Study Case Requirements
 
-Although your friend has an excellent understanding of property prices in her own state and residential area, she fears that basing her estimates for property worth on her current knowledge might lead to inaccurate appraisals. What makes a house desirable and valuable where she comes from might not be the same in Ames, Iowa. She found a public dataset with house prices for Ames, Iowa, and will provide you with that.
+The requirements of my clients are:
 
-* 1 - The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that.
-* 2 - The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.
+1. The three cities with the best average daily rental price for an entire house/apt with upm to 3 brdrooms;
+2. Considering the number of bedrooms and the distance of the property from the city center and the nearest metro, they would like to:
+   * know what influences prices the most;
+   * be able to predict price of future acquired properties.
 
-## Hypothesis and how to validate?
+**To develop the second requirement, my clients want to keep the analysis in the average price range that will be found in the first requirement**  
 
-* List here your project hypothesis(es) and how you envision validating it (them).
+- - -
 
-## The rationale to map the business requirements to the Data Visualisations and ML tasks
+## Hypotheses and Validation 
 
-* List your business requirements and a rationale to map them to the Data Visualisations and ML tasks.
+### Hypotheses
 
-## ML Business Case
+**Hypothesis 1 (Number of Bedrooms):** Properties with more bedrooms command higher daily prices.
+ + **Rationale:** Larger properties, especially those with more bedrooms, tend to have higher daily rates as they can accommodate more guests and offer greater comfort making them more desirable to both families and groups of travelers.
 
-* In the previous bullet, you potentially visualised an ML task to answer a business requirement. You should frame the business case using the method we covered in the course.
+**Hypothesis 2 (City Center Proximity):** Proximity to the city center has a significant impact on the price of an Airbnb property.
+ + **Rationale:** Properties closer to city centers are likely to be more expensive due to convenience, accessibility to landmarks, business hubs, and other attractions. We expect a negative correlation between `city_center_dist_km` and `daily_price`, meaning prices decrease as distance from the center increases.
+
+**Hypothesis 3 (Metro Proximity):** Proximity to public transportation (metros) affects property prices, but to a lesser extent compared to city center proximity.
+ + **Rationale:** While being near public transportation is beneficial for travelers, we hypothesize that it will have a weaker impact on price compared to the distance from the city center, as travelers prioritize central locations more.
+
+### Validation
+
+**Hypothesis 1 (Number of Bedrooms):** Confirmed. The number of bedrooms is the strongest predictor of daily price, with larger properties commanding higher rates.
+
+**Hypothesis 2 (City Center Proximity):** Confirmed. Properties closer to the city center tend to have higher prices, with the highest demand for properties within a 3-6 km range from the center.
+
+**Hypothesis 3 (Metro Proximity):** Partially Confirmed. While proximity to metro stations has some influence on price, it is weaker than proximity to the city center or the number of bedrooms.
+
+- - -
+
+## Data Visualisation and Data Cleaning  
+
+1. Data Visualization:
+   + City Price Trends: Plot the average prices for each city over weekends and weekdays to understand city-specific price variations.
+   + Scatter Plots: Explore relationships between property features to validate hypotheses.
+2. Data Cleaning:
+   + Drop Variables: Based on the analysis, two features were dropped: `room_type` and `weekends`.
+   + Feature Selection: Based on the analysis, features like `city`, `bedrooms`, `city_center_dist_km`, and `metro_dist_km` were selected for building the ML to predict prices.
+   
+- - -
+
+## Machine Learning Case
+
+The ML case revolves around predicting Airbnb prices using a variety of regression models. Key tasks included:
+
+1. Feature Engineering:
+   + Apply Box-Cox transformation to `city_center_dist_km` and logarithmic transformation `metro_dist_km` and `daily_price`.
+   + Create one-hot encoding for the categorical variable city.
+2. Model Selection:
+   + Four models were tested: Linear Regression, Ridge Regression, Lasso Regression, and Gradient Boosting Regressor.
+   + Gradient Boosting provided the best performance based on Mean Absolute Error (MAE) and R² score.
+3. Hyperparameter Tuning:
+   + Hyperparameter tuning was done using GridSearchCV to optimize learning_rate, max_depth, and n_estimators for the Gradient Boosting model.
+4. Evaluation:
+   + The best model achieved a Mean Absolute Error (MAE) of approximately 60.38 and an R² score of 0.58.
+
+---
 
 ## Dashboard Design
 
-* List all dashboard pages and their content, either blocks of information or widgets, like buttons, checkboxes, images, or any other items that your dashboard library supports.
-* Eventually, during the project development, you may revisit your dashboard plan to update a given feature (for example, at the beginning of the project you were confident you would use a given plot to display an insight but eventually you needed to use another plot type)
+The dashboard was designed using Streamlit to display key insights and predictions. It includes:
 
-## Unfixed Bugs
+1. Analysis Summary: Introduction to the project analysis.
+2. Analysis and Data Visualization: Interactive analysis and plots for average price trends by city, correlation analysis, and scatter plots.
+3. Price Prediction Interface: Users can input property features and receive predicted prices using the trained machine learning model.
+4. Hypotheses and Validation: Hypotheses validation of wthat could be correlated to the daily rent prices. 
+5. Feature Importance: Display a chart showing the most important features contributing to the price prediction model.
 
-* You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a big variable to consider, paucity of time and difficulty understanding implementation is not valid reason to leave bugs unfixed.
+- - -
 
 ## Deployment
 
-### Heroku
+The entire project, including the machine learning pipeline and dashboard, was deployed on Heroku.
 
-* The App live link is: <https://YOUR_APP_NAME.herokuapp.com/>
-* Set the runtime.txt Python version to a [Heroku-20](https://devcenter.heroku.com/articles/python-support#supported-runtimes) stack currently supported version.
-* The project was deployed to Heroku using the following steps.
+- Git and Heroku CLI were used to set the Heroku Stak to `heroku-20`.
 
-1. Log in to Heroku and create an App
-2. At the Deploy tab, select GitHub as the deployment method.
-3. Select your repository name and click Search. Once it is found, click Connect.
-4. Select the branch you want to deploy, then click Deploy Branch.
-5. The deployment process should happen smoothly if all deployment files are fully functional. Click the button Open App on the top of the page to access your App.
-6. If the slug size is too large then add large files not required for the app to the .slugignore file.
+- - -
 
-## Main Data Analysis and Machine Learning Libraries
+## Main Libraries Used
 
-* Here you should list the libraries you used in the project and provide example(s) of how you used these libraries.
+The project leverages the following key libraries:
+
+- Pandas: For data manipulation and preprocessing.
+- NumPy: For numerical computations.
+- Matplotlib & Seaborn: For data visualization.
+- Scikit-learn: For building and tuning machine learning models.
+- Streamlit: For creating an interactive web application.
+- Joblib: For saving the trained models.
+- Heroku: For cloud deployment.
+
+- - -
+
+## Resources
+
+In addition to the course content I used [Stack Overflow](http://stackoverflow.com) to do research to develop my analysis project:
+
+- [Stack Overflow](http://stackoverflow.com)
+- [Streamlit documentation](https://docs.streamlit.io/)
+- [Jupyter](https://jupyter.org/)
+
+- - - 
+
+## Content
+
+Some codes and the dashboard idea for my analysis were taken from the Code Intitute's **Churnometer** project. I made modification to the codes to adapt to my analysis requirements.
+The content and the majority code of the analysis project were wrote by the developer.
+
+- - - 
 
 ## Credits
 
-* In this section, you need to reference where you got your content, media and extra help from. It is common practice to use code from other repositories and tutorials, however, it is important to be very specific about these sources to avoid plagiarism.
-* You can break the credits section up into Content and Media, depending on what you have included in your project.
-
-### Content
-
-* The text for the Home page was taken from Wikipedia Article A
-* Instructions on how to implement form validation on the Sign-Up page was taken from [Specific YouTube Tutorial](https://www.youtube.com/)
-* The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
-
-### Media
-
-* The photos used on the home and sign-up page are from This Open Source site
-* The images used for the gallery page were taken from this other open-source site
-
-## Acknowledgements (optional)
-
-
-* In case you would like to thank the people that provided support through this project.
-
+I used the Code Intitute's **Churnometer** project as a basis to develop the analysis of my project and better understand how to use the necessary features in its development.

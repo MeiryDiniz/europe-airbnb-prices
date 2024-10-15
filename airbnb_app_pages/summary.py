@@ -9,13 +9,12 @@ def summary_body():
         f"In this case, my clients informed me what their requirements were, and with this information I developed the analysis.\n")
 
     st.info(
-        f"The dataset used to develop this analysis was imported from [Kaggle](https://www.kaggle.com/datasets/cahyaalkahfi/airbnb-european-cities-join).\n"
-        f"In this case, my client informed me which were the five cities they were more interest in and with this information I developed the analysis.\n")    
-
+        f"The dataset used to develop this analysis was imported from [Kaggle](https://www.kaggle.com/datasets/cahyaalkahfi/airbnb-european-cities-join).\n"            
+    )
     st.write("---")
 
     st.write("### Clients' Requirement")  
-    # text used from the 02-AirbnbCaseStudy notebook
+    # text used from the readme 
     st.info(
         f"+ The three cities with the best average daily rental price for an entire house/apt with upm to 3 brdrooms;\n"
         f"+ Considering the number of bedrooms and the distance of the property from the city center and the nearest metro, they would like to:\n"

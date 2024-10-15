@@ -1,3 +1,4 @@
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -35,29 +36,33 @@ def predict_price_body():
     st.write("Data Inputted for Prediction:")
     st.write(input_df.style.format({"city_center_dist_km": "{:.3f}", "metro_dist_km": "{:.3f}"}))
     
-   
-    # Access the preprocessor from the pipeline to check feature order
-    preprocessor = best_gb_pipeline.named_steps['preprocessor']
-
-    # Get expected column names for the preprocessor (both numerical and one-hot encoded)
-    try:
-        one_hot_encoder = preprocessor.named_transformers_['cat']
-        categorical_columns = one_hot_encoder.get_feature_names_out(['city'])
-    except AttributeError:
-        categorical_columns = one_hot_encoder.get_feature_names(['city'])  
-
-    # Numerical features that the pipeline was trained on
-    numerical_features = ['bedrooms', 'city_center_dist_km', 'metro_dist_km']
-
-    # Combine all expected columns
-    expected_columns = list(numerical_features) + list(categorical_columns)    
-
-    # Perform prediction
+   # Perform prediction
     if st.button("Predict"):
-        try:            
+        try:
+            # Predict the price based on user input
             predicted_log_price = best_gb_pipeline.predict(input_df)
             predicted_price = round(np.expm1(predicted_log_price[0]), 2)
             st.write(f"Predicted Property Price: ${predicted_price}")
 
+            # Load saved test data for calculating performance metrics
+            X_test = pd.read_csv("outputs/ml_pipeline/airbnb_price_prediction/v1/X_test.csv")
+            y_test = pd.read_csv("outputs/ml_pipeline/airbnb_price_prediction/v1/y_test.csv")
+
+            # Perform predictions on test data
+            y_pred_log = best_gb_pipeline.predict(X_test)
+            y_pred = np.expm1(y_pred_log)  # Inverse log transform
+            y_test_actual = np.expm1(y_test)  # Inverse log transform
+
+            #Calculate performance metrics
+            mae = mean_absolute_error(y_test_actual, y_pred)
+            
+
+            # Calculate the prediction error for the specific input
+            error_margin = mae
+            prediction_error = predicted_price - error_margin
+
+            # Display error margin
+            st.write(f"The prediction error is ± ${error_margin:.2f} (based on model's MAE)")
+
         except Exception as e:
-            st.error(f"Error during prediction: {e}")
+            st.error(f"Error during prediction: {e}")    

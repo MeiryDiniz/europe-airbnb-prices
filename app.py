@@ -19,5 +19,6 @@ app.add_page("Airbnb Predict Price", predict_price_body)
 app.add_page("Project Hypothesis and Validation", project_hypothesis_body)
 app.add_page("Ml Pipeline: Predict Price Airbnb", ml_predict_body)
 
+
 # Run the app
 app.run()
