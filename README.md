@@ -1,4 +1,4 @@
-# Europe Airbnb Prices  
+# Europe Airbnb Prices Prediction  
 
 Visit the live version of the project dashboard: [Airbnb Predict Prices](https://airbnb-predict-prices-fa26d424b166.herokuapp.com/)
 
@@ -143,7 +143,7 @@ The project leverages the following key libraries:
 
 ## Resources
 
-In addition to the course content I used [Stack Overflow](http://stackoverflow.com) to do research to develop my analysis project:
+In addition to the course content I used the following to do research to develop my analysis project:
 
 - [Stack Overflow](http://stackoverflow.com)
 - [Streamlit documentation](https://docs.streamlit.io/)
